@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maps</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+</head>
+<body>
+    <form method="get">
+        <label>Incident Type</label>
+        <select name="incident_type">
+            <option value="all">All</option>
+            {% for incident_type in incident_type_list %}
+            <option value="{{incident_type.pk}}" {% if incident_type.pk|stringformat:"s" == request.GET.incident_type %} selected {% endif %}>{{incident_type.name}}</option>
+            {% endfor %}
+        </select>
+
+        <label>Incident Status</label>
+        <select name="incident_status">
+            <option value="all">All</option>
+            {% for incident_status in incident_status_list %}
+            <option value="{{incident_status.pk}}" {% if incident_status.pk|stringformat:"s" == request.GET.incident_status %} selected {% endif %}>{{incident_status.name}}</option>
+            {% endfor %}
+        </select>
+        
+        <button>Filter</button>
+    </form>
+    Hello World
+    <div id="map"></div>
+    <div class="">
+        {{data}}
+    </div>
+
+<!-- <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqN9JNrIqprBHDGRoEA2muI24LrFvmBfM&callback=initMap&v=weekly"
+    defer
+  ></script> -->
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqN9JNrIqprBHDGRoEA2muI24LrFvmBfM&callback=initMap&v=weekly" defer></script>
+
+<script >
+    let map;
+    let jsonData = {{ data|safe }};  // Assuming data is JSON, use |safe to prevent auto-escaping
+    let latLong = []
+    function initMap() {
+        
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 2,
+            center: new google.maps.LatLng(2.8, -187.3),
+            mapId: "9aec9a3a015f9e64",
+        });
+
+
+        if (typeof jsonData === 'object' && jsonData !== null) {
+            for (var key in jsonData) {
+                if (jsonData.hasOwnProperty(key)) {
+                    var point = jsonData[key];
+                    var latLng = new google.maps.LatLng(point.long, point.lat);
+                    console.log(point.lat, point.long)
+                    new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        });
+                    latLong.push(latLng)
+
+                }
+            }
+        } else {
+            console.error("jsonData is not an object.");
+        }};
+    
+
+
+    </script>
+</body>
+</html>
