@@ -48,7 +48,6 @@
 <script >
     let map;
     let jsonData = {{ data|safe }};  // Assuming data is JSON, use |safe to prevent auto-escaping
-    let latLong = []
     function initMap() {
         
         map = new google.maps.Map(document.getElementById("map"), {
@@ -63,19 +62,35 @@
                 if (jsonData.hasOwnProperty(key)) {
                     var point = jsonData[key];
                     var latLng = new google.maps.LatLng(point.long, point.lat);
-                    console.log(point.lat, point.long)
-                    new google.maps.Marker({
+                    var infowindow = new google.maps.InfoWindow({
+                        content: `
+                        ${point.name}<br>
+                        ${point.incident_type}<br>
+                        ${point.date}<br>
+                        ${point.incident_status}<br>
+                        <a href="https://google.com" target="_blank" >View Details</a>
+                        `
+                    });
+                    var marker = new google.maps.Marker({
                         position: latLng,
                         map: map,
-                        });
-                    latLong.push(latLng)
+                    });
+                    marker.setMap(map);
+                 
+                    (function(marker, infowindow) {
+                            google.maps.event.addListener(marker, 'click', function() {
+                                infowindow.open(map, marker);
+                            });
+                        })(marker, infowindow);
+                    }
 
-                }
+
             }
         } else {
             console.error("jsonData is not an object.");
         }};
-    
+
+                
 
 
     </script>

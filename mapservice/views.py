@@ -17,26 +17,31 @@ class BaseMapView(TemplateView):
         incident_status_list = IncidentStatus.objects.all()
         incident_type_list = IncidentType.objects.all()
 
-        data["incident_list"] = incident_list
         data["incident_type_list"] = incident_type_list
         data["incident_status_list"] = incident_status_list
 
         data["data"] = {}
 
+        
+
+        if incident_status:
+            if incident_status != "all":
+                incident_list = incident_list.filter(incident_status__pk=incident_status)
+        if incident_type:
+            if incident_type != "all":
+                incident_list = incident_list.filter(incident_type__pk=incident_type)
+
+        data["incident_list"] = incident_list
         for incident in incident_list:
             data["data"][incident.pk] = {
                 "name": incident.name,
                 "lat": incident.lat,
                 "long": incident.long,
                 "incident_type": incident.incident_type.name,
+                "incident_status": incident.incident_status.name,
+                "date": str(incident.incident_date.time()) + " | " + str(incident.incident_date.date()),
                 "remarks": incident.remarks
             }
-
-        if incident_status:
-            if incident_status == "all":
-                pass
-            else:
-                pass
         return data
 
 
