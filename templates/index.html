@@ -6,7 +6,7 @@
     <title>Maps</title>
     <style>
         #map {
-            height: 400px;
+            height: 600px;
             width: 100%;
         }
     </style>
@@ -31,12 +31,10 @@
         </select>
         
         <button>Filter</button>
+        <a href="/">Clear</a>
     </form>
-    Hello World
+    Crime Report
     <div id="map"></div>
-    <div class="">
-        {{data}}
-    </div>
 
 <!-- <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqN9JNrIqprBHDGRoEA2muI24LrFvmBfM&callback=initMap&v=weekly"
@@ -51,7 +49,7 @@
     function initMap() {
         
         map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 2,
+            zoom: 3,
             center: new google.maps.LatLng(2.8, -187.3),
             mapId: "9aec9a3a015f9e64",
         });
@@ -68,10 +66,10 @@
                         ${point.incident_type}<br>
                         ${point.date}<br>
                         ${point.incident_status}<br>
-                        <a href="https://google.com" target="_blank" >View Details</a>
+                        <a href="/incident/${key}" target="_blank" >View Details</a>
                         `
                     });
-                    var marker = new google.maps.Marker({
+                    const marker = new google.maps.Marker({
                         position: latLng,
                         map: map,
                     });

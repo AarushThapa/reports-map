@@ -1,7 +1,7 @@
 from typing import Any
 from django.shortcuts import render
 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from .models import Incident, IncidentStatus, IncidentType
 
 
@@ -60,3 +60,9 @@ class BaseMapView(TemplateView):
 #       key: "AIzaSyCqN9JNrIqprBHDGRoEA2muI24LrFvmBfM",
 #       v: "weekly",
 #     });
+
+
+class IncidentDetailPage(DetailView):
+    template_name = "incident_detail.html"
+    model = Incident
+    
