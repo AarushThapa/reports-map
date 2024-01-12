@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 CUSTOM_APPS = [
     "mapservice",
+    "voiceservice"
 ]
 
 INSTALLED_APPS += CUSTOM_APPS

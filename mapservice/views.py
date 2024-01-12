@@ -66,3 +66,4 @@ class IncidentDetailPage(DetailView):
     template_name = "incident_detail.html"
     model = Incident
     
+
